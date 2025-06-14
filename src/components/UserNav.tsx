@@ -1,53 +1,112 @@
 // filepath: src/components/UserNav.tsx
 "use client";
 
-import { useSession, signOut } from "next-auth/react";
 import Link from "next/link";
 import Image from "next/image";
+import { signOut, useSession } from "next-auth/react";
+import { useState, useRef, useEffect } from "react";
 
-export default function UserNav() {
+interface UserNavProps {
+  isMobile?: boolean;
+}
+
+export default function UserNav({ isMobile = false }: UserNavProps) {
   const { data: session, status } = useSession();
   const loading = status === "loading";
+  const [isOpen, setIsOpen] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
 
-  if (loading) return <div className="animate-pulse h-8 w-8 bg-gray-200 rounded-full"></div>;
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(event.target as Node)
+      ) {
+        setIsOpen(false);
+      }
+    }
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
+  if (loading)
+    return (
+      <div className="animate-pulse h-8 w-8 bg-gray-200 rounded-full"></div>
+    );
 
   if (!session) {
     return (
       <Link
         href="/signin"
-        className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+        className={
+          isMobile
+            ? "w-full py-3 rounded-xl text-center font-medium bg-gradient-to-r from-purple-500 to-pink-500 text-white hover:brightness-110 transition-all shadow-md"
+            : "px-5 py-1.5 rounded-full border border-white/20 bg-white/10 text-white hover:bg-white/20 transition-colors"
+        }
       >
-        Sign in
+        Sign In
       </Link>
     );
   }
 
+  // Truncate name to 15 characters
+  const displayName = session.user?.name || "User";
+  const truncatedName =
+    displayName.length > 15
+      ? `${displayName.substring(0, 15)}...`
+      : displayName;
+
   return (
-    <div className="relative inline-block text-left">
-      <div className="flex items-center space-x-2">
-        <div className="text-sm text-gray-700">
-          {session.user?.name || "User"}
-        </div>
+    <div className="relative inline-block text-left" ref={dropdownRef}>
+      <button
+        onClick={() => setIsOpen(!isOpen)}
+        className={
+          isMobile
+            ? "w-full py-2 px-3 rounded-xl flex items-center justify-center space-x-2 font-medium bg-gradient-to-r from-purple-500 to-pink-500 text-white hover:brightness-110 transition-all shadow-md"
+            : "px-4 py-1.5 rounded-full border border-white/20 bg-white/10 text-white hover:bg-white/20 transition-colors flex items-center space-x-2"
+        }
+      >
         {session.user?.image ? (
           <Image
             src={session.user.image}
             alt={session.user?.name || "User"}
-            width={32}
-            height={32}
+            width={24}
+            height={24}
             className="rounded-full"
           />
         ) : (
-          <div className="h-8 w-8 rounded-full bg-blue-500 flex items-center justify-center text-white">
+          <div className="h-6 w-6 rounded-full bg-blue-500 flex items-center justify-center text-white text-xs">
             {(session.user?.name || "U").charAt(0)}
           </div>
         )}
-        <button
-          onClick={() => signOut()}
-          className="text-sm text-red-600 hover:text-red-800"
-        >
-          Sign out
-        </button>
-      </div>
+        <span className="text-sm">{truncatedName}</span>
+      </button>
+
+      {/* Dropdown menu */}
+      {isOpen && (
+        <div className="absolute right-0 mt-2 w-56 rounded-md shadow-lg bg-white dark:bg-gray-800 ring-1 ring-black ring-opacity-5 z-50">
+          <div className="py-1">
+            <div className="px-4 py-3 border-b border-gray-100 dark:border-gray-700">
+              <p className="text-sm font-medium text-gray-900 dark:text-white">
+                {session.user?.name}
+              </p>
+              <p className="text-xs text-gray-500 dark:text-gray-400 truncate">
+                {session.user?.email}
+              </p>
+            </div>
+            <button
+              onClick={() => signOut()}
+              className="block w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-gray-100 dark:hover:bg-gray-700"
+            >
+              Sign out
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

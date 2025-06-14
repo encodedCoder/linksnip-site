@@ -1,6 +1,6 @@
 {
-  "name": "MyWebSite",
-  "short_name": "MySite",
+  "name": "LinkSnip by encodedCoder - A URL Shortener",
+  "short_name": "LinkSnip",
   "icons": [
     {
       "src": "/web-app-manifest-192x192.png",

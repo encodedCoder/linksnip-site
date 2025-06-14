@@ -75,7 +75,10 @@ export default function Footer() {
 
             {/* Bottom section with copyright and terms */}
             <div className="flex flex-col md:flex-row justify-between items-center text-white/60 text-sm">
-              <div>© {currentYear} LinkSnip. All rights reserved.</div>
+              <div>
+                Copyright © {currentYear} encodedcoder · Suresh. All rights
+                reserved.
+              </div>
               <div className="flex gap-6 mt-4 md:mt-0">
                 <Link
                   href="/privacy"

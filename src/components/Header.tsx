@@ -1,9 +1,10 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
+import UserNav from "./UserNav";
+import Link from "next/link";
 
 export default function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -86,20 +87,13 @@ export default function Header() {
             whileTap={{ scale: 0.98 }}
           >
             <div className="absolute inset-0 bg-gradient-to-r from-pink-500 via-purple-500 to-blue-500 animate-gradient-x"></div>
-            <div className="px-5 py-1.5 bg-black/20 backdrop-blur-sm relative z-10 flex items-center gap-2 border border-white/20">
+            {/* <div className="px-5 py-1.5 bg-black/20 backdrop-blur-sm relative z-10 flex items-center gap-2 border border-white/20">
               <span className="font-bold text-white">Created by Suresh</span>
-            </div>
+            </div> */}
           </motion.a>
 
-          {/* Sign In Button */}
-          <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.98 }}>
-            <Link
-              href="/signin"
-              className="px-5 py-1.5 rounded-full border border-white/20 bg-white/10 text-white hover:bg-white/20 transition-colors"
-            >
-              Sign In
-            </Link>
-          </motion.div>
+          {/* UserNav component */}
+          <UserNav />
         </div>
 
         {/* Mobile Menu Button */}
@@ -164,7 +158,7 @@ export default function Header() {
                   </Link>
                 ))}
                 {/* Mobile profile link */}
-                <Link
+                {/* <Link
                   href="https://www.encodedcoder.com"
                   target="_blank"
                   onClick={() => setIsMobileMenuOpen(false)}
@@ -173,16 +167,11 @@ export default function Header() {
                   <div className="w-full py-3 px-4 rounded-xl text-center font-medium bg-gradient-to-r from-pink-500 via-purple-500 to-blue-500 text-white hover:brightness-110 transition-all shadow-md">
                     Created by Suresh
                   </div>
-                </Link>
-                <Link
-                  href="/signin"
-                  onClick={() => setIsMobileMenuOpen(false)}
-                  className="block w-full"
-                >
-                  <div className="w-full py-3 rounded-xl text-center font-medium bg-gradient-to-r from-purple-500 to-pink-500 text-white hover:brightness-110 transition-all shadow-md">
-                    Sign In
-                  </div>
-                </Link>
+                </Link> */}
+                {/* Mobile UserNav */}
+                <div className="w-full flex justify-center">
+                  <UserNav isMobile={true} />
+                </div>
               </nav>
             </motion.div>
           </motion.div>
