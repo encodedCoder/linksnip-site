@@ -151,6 +151,8 @@ export default function Header() {
                     href={`/${
                       item === "Home"
                         ? ""
+                        : item === "API"
+                        ? "api-docs"
                         : item.toLowerCase().replace(" ", "-")
                     }`}
                     onClick={() => setIsMobileMenuOpen(false)}
@@ -196,7 +198,11 @@ function NavItem({ label }: { label: string }) {
     <motion.div whileHover={{ scale: 1.1 }} className="relative group">
       <Link
         href={`/${
-          label === "Home" ? "" : label.toLowerCase().replace(" ", "-")
+          label === "Home"
+            ? ""
+            : label === "API"
+            ? "api-docs"
+            : label.toLowerCase().replace(" ", "-")
         }`}
         className="text-white/80 hover:text-white transition-colors"
       >
