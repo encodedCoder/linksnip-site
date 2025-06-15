@@ -14,7 +14,7 @@ import Providers from "./providers";
 // });
 
 export const metadata: Metadata = {
-  title: "LinkSnip by encodedCoder",
+  title: "LinkSnip by Suresh",
   description:
     "The best link shortener and management tool. Easily create, manage, and share your links with LinkSnip.",
 };

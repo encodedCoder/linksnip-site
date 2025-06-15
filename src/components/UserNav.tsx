@@ -38,6 +38,7 @@ export default function UserNav({ isMobile = false }: UserNavProps) {
       <div className="animate-pulse h-8 w-8 bg-gray-200 rounded-full"></div>
     );
 
+  // In mobile view and not signed in - show sign in button
   if (!session) {
     return (
       <Link
@@ -53,6 +54,19 @@ export default function UserNav({ isMobile = false }: UserNavProps) {
     );
   }
 
+  // For mobile view and already signed in - just show sign out button
+  if (isMobile) {
+    return (
+      <button
+        onClick={() => signOut()}
+        className="w-full py-3 rounded-xl text-center font-medium bg-gradient-to-r from-pink-500 to-purple-500 text-white hover:brightness-110 transition-all shadow-md"
+      >
+        Sign Out
+      </button>
+    );
+  }
+
+  // For desktop view - show dropdown menu
   // Truncate name to 15 characters
   const displayName = session.user?.name || "User";
   const truncatedName =
@@ -64,11 +78,7 @@ export default function UserNav({ isMobile = false }: UserNavProps) {
     <div className="relative inline-block text-left" ref={dropdownRef}>
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className={
-          isMobile
-            ? "w-full py-2 px-3 rounded-xl flex items-center justify-center space-x-2 font-medium bg-gradient-to-r from-purple-500 to-pink-500 text-white hover:brightness-110 transition-all shadow-md"
-            : "px-4 py-1.5 rounded-full border border-white/20 bg-white/10 text-white hover:bg-white/20 transition-colors flex items-center space-x-2"
-        }
+        className="px-4 py-1.5 rounded-full border border-white/20 bg-white/10 text-white hover:bg-white/20 transition-colors flex items-center space-x-2"
       >
         {session.user?.image ? (
           <Image
@@ -88,19 +98,42 @@ export default function UserNav({ isMobile = false }: UserNavProps) {
 
       {/* Dropdown menu */}
       {isOpen && (
-        <div className="absolute right-0 mt-2 w-56 rounded-md shadow-lg bg-white dark:bg-gray-800 ring-1 ring-black ring-opacity-5 z-50">
+        <div className="absolute right-0 mt-2 w-56 rounded-md shadow-lg backdrop-blur-md border border-white/20 bg-black/40 ring-1 ring-white/10 z-50">
           <div className="py-1">
-            <div className="px-4 py-3 border-b border-gray-100 dark:border-gray-700">
-              <p className="text-sm font-medium text-gray-900 dark:text-white">
+            <div className="px-4 py-3 border-b border-white/20">
+              <p className="text-sm font-medium text-white">
                 {session.user?.name}
               </p>
-              <p className="text-xs text-gray-500 dark:text-gray-400 truncate">
+              <p className="text-xs text-white/70 truncate">
                 {session.user?.email}
               </p>
             </div>
+
+            {/* Profile link */}
+            <Link
+              href="/profile"
+              className="block w-full text-left px-4 py-2 text-sm text-white hover:bg-white/10 transition-colors"
+              onClick={() => setIsOpen(false)}
+            >
+              Profile
+            </Link>
+
+            {/* Settings link */}
+            <Link
+              href="/settings"
+              className="block w-full text-left px-4 py-2 text-sm text-white hover:bg-white/10 transition-colors"
+              onClick={() => setIsOpen(false)}
+            >
+              Settings
+            </Link>
+
+            {/* Divider */}
+            <div className="border-t border-white/20 my-1"></div>
+
+            {/* Sign out button */}
             <button
               onClick={() => signOut()}
-              className="block w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-gray-100 dark:hover:bg-gray-700"
+              className="block w-full text-left px-4 py-2 text-sm text-pink-400 hover:bg-white/10 transition-colors"
             >
               Sign out
             </button>

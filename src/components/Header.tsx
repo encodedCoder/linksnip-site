@@ -1,14 +1,16 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import Image from "next/image";
-import UserNav from "./UserNav";
 import Link from "next/link";
+import UserNav from "./UserNav";
+import Image from "next/image";
 
 export default function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const mobileMenuRef = useRef<HTMLDivElement>(null);
+  const hamburgerRef = useRef<HTMLButtonElement>(null);
 
   // Handle scroll effect
   useEffect(() => {
@@ -17,6 +19,25 @@ export default function Header() {
     };
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  // Handle outside click to close mobile menu
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (
+        mobileMenuRef.current &&
+        hamburgerRef.current &&
+        !mobileMenuRef.current.contains(event.target as Node) &&
+        !hamburgerRef.current.contains(event.target as Node)
+      ) {
+        setIsMobileMenuOpen(false);
+      }
+    }
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
   }, []);
 
   return (
@@ -99,24 +120,28 @@ export default function Header() {
         {/* Mobile Menu Button */}
         <div className="md:hidden">
           <button
+            ref={hamburgerRef}
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
             className="w-10 h-10 flex items-center justify-center rounded-full bg-white/10 hover:bg-white/20 transition-all"
+            aria-label="Toggle menu"
           >
-            <span
-              className={`block relative w-5 h-0.5 bg-white transition-all ${
-                isMobileMenuOpen ? "rotate-45 translate-y-0.5" : ""
-              }`}
-            ></span>
-            <span
-              className={`block relative w-5 h-0.5 bg-white mt-1 transition-all ${
-                isMobileMenuOpen ? "opacity-0" : ""
-              }`}
-            ></span>
-            <span
-              className={`block relative w-5 h-0.5 bg-white mt-1 transition-all ${
-                isMobileMenuOpen ? "-rotate-45 -translate-y-1.5" : ""
-              }`}
-            ></span>
+            <div className="w-5 h-5 flex flex-col justify-center items-center relative">
+              <span
+                className={`block absolute w-5 h-0.5 bg-white transition-transform duration-300 ease-in-out ${
+                  isMobileMenuOpen ? "rotate-45" : "translate-y-[-4px]"
+                }`}
+              ></span>
+              <span
+                className={`block w-5 h-0.5 bg-white transition-opacity duration-300 ease-in-out ${
+                  isMobileMenuOpen ? "opacity-0" : "opacity-100"
+                }`}
+              ></span>
+              <span
+                className={`block absolute w-5 h-0.5 bg-white transition-transform duration-300 ease-in-out ${
+                  isMobileMenuOpen ? "-rotate-45" : "translate-y-[4px]"
+                }`}
+              ></span>
+            </div>
           </button>
         </div>
       </div>
@@ -132,47 +157,41 @@ export default function Header() {
             transition={{ duration: 0.2 }}
           >
             <motion.div
+              ref={mobileMenuRef}
               className="max-w-5xl mx-auto rounded-2xl overflow-hidden backdrop-blur-md border border-white/20 bg-white/5 shadow-lg"
               initial={{ height: 0 }}
               animate={{ height: "auto" }}
               exit={{ height: 0 }}
               transition={{ duration: 0.3 }}
             >
-              <nav className="flex flex-col gap-2 p-4">
-                {["Home", "My Links", "API", "Pricing"].map((item) => (
-                  <Link
-                    key={item}
-                    href={`/${
-                      item === "Home"
-                        ? ""
-                        : item === "API"
-                        ? "api-docs"
-                        : item.toLowerCase().replace(" ", "-")
-                    }`}
-                    onClick={() => setIsMobileMenuOpen(false)}
-                    className="block w-full"
-                  >
-                    <div className="w-full py-3 px-4 rounded-xl hover:bg-white/10 transition-all">
-                      {item}
-                    </div>
-                  </Link>
-                ))}
-                {/* Mobile profile link */}
-                {/* <Link
-                  href="https://www.encodedcoder.com"
-                  target="_blank"
-                  onClick={() => setIsMobileMenuOpen(false)}
-                  className="block w-full"
-                >
-                  <div className="w-full py-3 px-4 rounded-xl text-center font-medium bg-gradient-to-r from-pink-500 via-purple-500 to-blue-500 text-white hover:brightness-110 transition-all shadow-md">
-                    Created by Suresh
-                  </div>
-                </Link> */}
-                {/* Mobile UserNav */}
-                <div className="w-full flex justify-center">
+              <div className="p-5 space-y-4">
+                {/* Mobile Nav Items */}
+                <div className="flex flex-col space-y-3">
+                  <MobileNavItem label="Home" href="/" />
+                  <MobileNavItem label="My Links" href="/my-links" />
+                  <MobileNavItem label="API" href="/api-docs" />
+                  <MobileNavItem label="Pricing" href="/pricing" />
+                  <MobileNavItem label="Profile" href="/profile" />
+                  <MobileNavItem label="Settings" href="/settings" />
+                </div>
+
+                {/* Divider */}
+                <div className="border-t border-white/10 my-3"></div>
+
+                {/* Legal Pages */}
+                <div className="flex flex-col space-y-3">
+                  <MobileNavItem label="Privacy Policy" href="/privacy" />
+                  <MobileNavItem label="Terms of Service" href="/terms" />
+                </div>
+
+                {/* Divider */}
+                <div className="border-t border-white/10 my-3"></div>
+
+                {/* Sign Out Button for Mobile */}
+                <div className="mt-4">
                   <UserNav isMobile={true} />
                 </div>
-              </nav>
+              </div>
             </motion.div>
           </motion.div>
         )}
@@ -199,5 +218,17 @@ function NavItem({ label }: { label: string }) {
         <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-purple-500 to-pink-500 group-hover:w-full transition-all duration-300"></span>
       </Link>
     </motion.div>
+  );
+}
+
+// Mobile nav item component
+function MobileNavItem({ label, href }: { label: string; href: string }) {
+  return (
+    <Link
+      href={href}
+      className="w-full px-4 py-2 text-white/90 hover:text-white hover:bg-white/10 rounded-lg transition-colors"
+    >
+      {label}
+    </Link>
   );
 }
