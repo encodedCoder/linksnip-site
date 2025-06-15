@@ -142,67 +142,6 @@ export default function SettingsPage() {
                   </div>
                 </div>
 
-                {/* Password Section */}
-                <div className="rounded-xl p-6 bg-white/5 border border-white/10">
-                  <h3 className="text-lg font-medium text-white mb-4">
-                    Change Password
-                  </h3>
-
-                  <div className="space-y-4">
-                    <div>
-                      <label
-                        htmlFor="current-password"
-                        className="block text-sm font-medium text-white/70 mb-1"
-                      >
-                        Current Password
-                      </label>
-                      <input
-                        type="password"
-                        id="current-password"
-                        className="w-full px-4 py-2 bg-black/30 border border-white/10 rounded-lg text-white focus:ring-2 focus:ring-purple-500 focus:border-transparent"
-                      />
-                    </div>
-
-                    <div>
-                      <label
-                        htmlFor="new-password"
-                        className="block text-sm font-medium text-white/70 mb-1"
-                      >
-                        New Password
-                      </label>
-                      <input
-                        type="password"
-                        id="new-password"
-                        className="w-full px-4 py-2 bg-black/30 border border-white/10 rounded-lg text-white focus:ring-2 focus:ring-purple-500 focus:border-transparent"
-                      />
-                    </div>
-
-                    <div>
-                      <label
-                        htmlFor="confirm-password"
-                        className="block text-sm font-medium text-white/70 mb-1"
-                      >
-                        Confirm New Password
-                      </label>
-                      <input
-                        type="password"
-                        id="confirm-password"
-                        className="w-full px-4 py-2 bg-black/30 border border-white/10 rounded-lg text-white focus:ring-2 focus:ring-purple-500 focus:border-transparent"
-                      />
-                    </div>
-
-                    <div className="pt-4">
-                      <motion.button
-                        whileHover={{ scale: 1.02 }}
-                        whileTap={{ scale: 0.98 }}
-                        className="px-4 py-2 bg-gradient-to-r from-purple-500 to-pink-500 rounded-lg text-white font-medium hover:brightness-110 transition-all"
-                      >
-                        Update Password
-                      </motion.button>
-                    </div>
-                  </div>
-                </div>
-
                 {/* Danger Zone */}
                 <div className="rounded-xl p-6 bg-red-500/10 border border-red-500/20">
                   <h3 className="text-lg font-medium text-white mb-4">
