@@ -82,9 +82,9 @@ export default function MyLinks() {
           transition={{ duration: 0.5, delay: 0.2 }}
         >
           My Links{" "}
-          <span className="ml-2 text-pink-400" role="img" aria-label="scissors">
+          {/* <span className="ml-2 text-pink-400" role="img" aria-label="scissors">
             ✂️
-          </span>
+          </span> */}
         </motion.h1>
 
         <div className="max-w-5xl mx-auto">

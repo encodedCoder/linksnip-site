@@ -142,7 +142,7 @@ export default function Home() {
             <span className="bg-clip-text text-transparent bg-gradient-to-r from-white to-white/70">
               LinkSnip
             </span>
-            <span className="ml-2 text-pink-400">✂️</span>
+            {/* <span className="ml-2 text-pink-400">✂️</span> */}
           </h1>
           <p className="text-white/70">
             Transform long URLs into short, shareable links in seconds

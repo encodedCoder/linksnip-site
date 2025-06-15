@@ -42,10 +42,10 @@ export default function Footer() {
                         className="object-contain"
                       />
                     </div>
-                    <span className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-white to-white/70 font-['Montserrat',sans-serif]">
+                    <span className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-white to-white/70">
                       LinkSnip
                     </span>
-                    <span className="text-pink-400 text-lg">✂️</span>
+                    {/* <span className="text-pink-400 text-lg">✂️</span> */}
                   </div>
                 </Link>
               </motion.div>
