@@ -2,8 +2,6 @@
 
 import { motion } from "framer-motion";
 import Link from "next/link";
-import Header from "@/components/Header";
-import Footer from "@/components/Footer";
 
 // Sample blog post data (keep your existing data)
 const blogPosts = [
@@ -50,8 +48,6 @@ export default function BlogPage() {
       <div className="absolute top-0 right-0 h-[500px] w-[500px] rounded-full bg-purple-500/20 blur-[120px]"></div>
       <div className="absolute bottom-0 left-0 h-[500px] w-[500px] rounded-full bg-blue-500/20 blur-[120px]"></div>
 
-      <Header />
-
       <motion.div
         className="flex-grow flex flex-col z-10"
         initial={{ opacity: 0 }}
@@ -73,7 +69,7 @@ export default function BlogPage() {
               transition={{ duration: 0.5 }}
               className="text-center mb-16"
             >
-              <h1 className="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent">
+              <h1 className="text-4xl md:text-5xl font-bold mb-6 bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent">
                 LinkSnip Blog
               </h1>
               <p className="text-xl text-gray-300 max-w-3xl mx-auto">
@@ -222,8 +218,6 @@ export default function BlogPage() {
           </div>
         </motion.main>
       </motion.div>
-
-      <Footer />
     </div>
   );
 }

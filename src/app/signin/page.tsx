@@ -3,14 +3,11 @@
 import { signIn } from "next-auth/react";
 // import { motion } from "framer-motion";
 import { useSearchParams } from "next/navigation";
-import Header from "@/components/Header";
-import Footer from "@/components/Footer";
 import { Suspense } from "react";
 
 export default function SignIn() {
   return (
     <>
-      <Header />
       <main className="min-h-screen flex flex-col items-center justify-center p-4 sm:p-20">
         {/* Animated background */}
         <div className="absolute inset-0 -z-10">
@@ -24,7 +21,6 @@ export default function SignIn() {
           <SignInContent />
         </Suspense>
       </main>
-      <Footer />
     </>
   );
 }
@@ -60,7 +56,7 @@ function SignInContent() {
       <div className="space-y-4">
         <button
           onClick={() => signIn("google", { callbackUrl })}
-          className="flex items-center justify-center w-full px-4 py-3 text-sm font-medium text-white bg-white/10 hover:bg-white/20 border border-white/30 rounded-xl shadow-sm transition-all hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-white/10"
+          className="flex items-center justify-center w-full px-4 py-3 text-sm font-medium text-white bg-white/10 hover:bg-white/20 border border-white/30 rounded-xl shadow-sm transition-all hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-white/10 cursor-pointer"
         >
           <svg
             className="w-5 h-5 mr-2"

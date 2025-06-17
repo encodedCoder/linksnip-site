@@ -3,8 +3,6 @@
 import { useState, useEffect } from "react";
 import { useSession } from "next-auth/react";
 import { motion } from "framer-motion";
-import Header from "@/components/Header";
-import Footer from "@/components/Footer";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -43,11 +41,9 @@ export default function ProfilePage() {
   if (status === "loading" || isLoading) {
     return (
       <div className="min-h-screen flex flex-col bg-gradient-to-br from-gray-900 via-purple-900 to-violet-900">
-        <Header />
         <div className="flex-grow flex items-center justify-center">
           <div className="w-12 h-12 border-4 border-t-purple-500 border-r-transparent border-b-pink-500 border-l-transparent rounded-full animate-spin"></div>
         </div>
-        <Footer />
       </div>
     );
   }
@@ -55,7 +51,6 @@ export default function ProfilePage() {
   if (!session) {
     return (
       <div className="min-h-screen flex flex-col bg-gradient-to-br from-gray-900 via-purple-900 to-violet-900">
-        <Header />
         <div className="flex-grow flex items-center justify-center">
           <div className="backdrop-blur-md bg-white/5 border border-white/10 rounded-2xl p-8 max-w-md w-full">
             <h2 className="text-2xl font-bold text-white mb-4">
@@ -72,15 +67,12 @@ export default function ProfilePage() {
             </a>
           </div>
         </div>
-        <Footer />
       </div>
     );
   }
 
   return (
     <div className="pt-25 min-h-screen flex flex-col bg-gradient-to-br from-gray-900 via-purple-900 to-violet-900">
-      <Header />
-
       <main className="flex-grow container mx-auto px-4 py-12">
         <div className="max-w-5xl mx-auto">
           {/* Enhanced Profile Card */}
@@ -232,8 +224,6 @@ export default function ProfilePage() {
           </motion.div>
         </div>
       </main>
-
-      <Footer />
     </div>
   );
 }

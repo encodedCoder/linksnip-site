@@ -4,8 +4,6 @@ import { useState, useRef } from "react";
 import { motion } from "framer-motion";
 import { QRCodeSVG } from "qrcode.react";
 import Image from "next/image";
-import Header from "@/components/Header";
-import Footer from "@/components/Footer";
 import ToastMessage from "@/components/ToastMessage";
 
 export default function Home() {
@@ -126,9 +124,8 @@ export default function Home() {
 
   return (
     <>
-      <Header />
       <ToastMessage visible={toastVisible} message="Snipped Link Copied" />
-      <main className="min-h-screen flex flex-col items-center justify-center p-4 sm:p-20">
+      <div className="min-h-screen flex flex-col items-center justify-center p-4 sm:p-20">
         {/* Animated background */}
         <div className="absolute inset-0 -z-10">
           <div className="absolute inset-0 bg-gradient-to-br from-blue-500/20 via-purple-500/20 to-pink-500/20 animate-gradient-slow"></div>
@@ -424,8 +421,7 @@ export default function Home() {
         {/* <div className="mt-12 text-white/50 text-sm">
           Made with ❤️ by LinkSnip Team
         </div> */}
-      </main>
-      <Footer />
+      </div>
     </>
   );
 }

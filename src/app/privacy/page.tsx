@@ -1,14 +1,10 @@
 "use client";
 
 import { motion } from "framer-motion";
-import Header from "@/components/Header";
-import Footer from "@/components/Footer";
 
 export default function PrivacyPolicy() {
   return (
     <div className="pt-25 min-h-screen flex flex-col bg-gradient-to-br from-gray-900 via-purple-900 to-violet-900">
-      <Header />
-
       <main className="flex-grow container mx-auto px-4 py-12">
         <div className="max-w-5xl mx-auto">
           <motion.div
@@ -129,8 +125,6 @@ export default function PrivacyPolicy() {
           </motion.div>
         </div>
       </main>
-
-      <Footer />
     </div>
   );
 }

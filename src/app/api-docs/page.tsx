@@ -4,8 +4,6 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { atomDark } from "react-syntax-highlighter/dist/cjs/styles/prism";
-import Header from "@/components/Header";
-import Footer from "@/components/Footer";
 
 export default function ApiPage() {
   const [activeTab, setActiveTab] = useState("overview");
@@ -242,8 +240,6 @@ export default function ApiPage() {
 
   return (
     <main className="min-h-screen flex flex-col bg-gradient-to-br from-gray-900 via-purple-900 to-violet-900">
-      <Header />
-
       <div className="pt-25 flex-grow container mx-auto px-4 py-12">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -834,8 +830,6 @@ export default function ApiPage() {
           </motion.div>
         </motion.div>
       </div>
-
-      <Footer />
     </main>
   );
 }

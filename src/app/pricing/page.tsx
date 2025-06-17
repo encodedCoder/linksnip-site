@@ -2,8 +2,6 @@
 
 import React from "react";
 import { motion } from "framer-motion";
-import Header from "@/components/Header";
-import Footer from "@/components/Footer";
 
 const PricingPage = () => {
   const pricingTiers = [
@@ -57,8 +55,6 @@ const PricingPage = () => {
 
   return (
     <main className="min-h-screen flex flex-col bg-gradient-to-br from-gray-900 via-purple-900 to-violet-900">
-      <Header />
-
       <div className="flex-grow container mx-auto px-4 py-16 pt-25">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -191,8 +187,6 @@ const PricingPage = () => {
           </motion.div>
         </motion.div>
       </div>
-
-      <Footer />
     </main>
   );
 };

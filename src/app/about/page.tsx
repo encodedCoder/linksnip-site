@@ -2,8 +2,6 @@
 
 import { motion } from "framer-motion";
 import { useState } from "react";
-import Header from "@/components/Header";
-import Footer from "@/components/Footer";
 import Image from "next/image";
 
 export default function AboutPage() {
@@ -196,8 +194,6 @@ export default function AboutPage() {
 
   return (
     <div className="min-h-screen flex flex-col bg-gradient-to-br from-gray-900 via-purple-900 to-violet-900">
-      <Header />
-
       <main className="flex-grow pt-32 pb-20 px-4">
         <motion.div
           initial={{ opacity: 0 }}
@@ -464,8 +460,6 @@ export default function AboutPage() {
           </motion.div>
         </motion.div>
       </main>
-
-      <Footer />
     </div>
   );
 }

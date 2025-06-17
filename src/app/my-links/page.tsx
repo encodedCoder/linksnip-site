@@ -2,8 +2,6 @@
 
 import { useState } from "react";
 import { motion } from "framer-motion";
-import Header from "@/components/Header";
-import Footer from "@/components/Footer";
 
 // Dummy data type definition
 type LinkData = {
@@ -67,8 +65,6 @@ export default function MyLinks() {
 
   return (
     <main className="min-h-screen flex flex-col bg-gradient-to-br from-gray-900 via-purple-900 to-violet-900">
-      <Header />
-
       <motion.div
         className="flex-grow container mx-auto px-4 py-8 pt-25"
         initial={{ opacity: 0, y: 20 }}
@@ -183,8 +179,6 @@ export default function MyLinks() {
           </div>
         </div>
       </motion.div>
-
-      <Footer />
     </main>
   );
 }

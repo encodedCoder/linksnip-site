@@ -94,13 +94,13 @@ export default function Header() {
           <NavItem label="My Links" />
           <NavItem label="API" />
           <NavItem label="Pricing" />
-          <NavItem label="About" /> {/* Added About nav item */}
+          <NavItem label="About" />
         </div>
 
         {/* Desktop Actions */}
         <div className="hidden md:flex items-center gap-4">
           {/* Profile link */}
-          <motion.a
+          {/* <motion.a
             href="https://www.encodedcoder.com"
             target="_blank"
             rel="noopener noreferrer"
@@ -109,10 +109,10 @@ export default function Header() {
             whileTap={{ scale: 0.98 }}
           >
             <div className="absolute inset-0 bg-gradient-to-r from-pink-500 via-purple-500 to-blue-500 animate-gradient-x"></div>
-            {/* <div className="px-5 py-1.5 bg-black/20 backdrop-blur-sm relative z-10 flex items-center gap-2 border border-white/20">
+            <div className="px-5 py-1.5 bg-black/20 backdrop-blur-sm relative z-10 flex items-center gap-2 ">
               <span className="font-bold text-white">Created by Suresh</span>
-            </div> */}
-          </motion.a>
+            </div>
+          </motion.a> */}
 
           {/* UserNav component */}
           <UserNav />
