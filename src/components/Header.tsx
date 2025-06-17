@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 import UserNav from "./UserNav";
 import Image from "next/image";
@@ -41,12 +40,7 @@ export default function Header() {
   }, []);
 
   return (
-    <motion.header
-      className="fixed top-4 left-0 right-0 z-50 flex justify-center px-4"
-      initial={{ y: -100, opacity: 0 }}
-      animate={{ y: 0, opacity: 1 }}
-      transition={{ duration: 0.5, ease: "easeOut" }}
-    >
+    <header className="fixed top-4 left-0 right-0 z-50 flex justify-center px-4">
       <div
         className={`relative max-w-5xl w-full rounded-full backdrop-blur-md border border-white/20 flex items-center justify-between px-6 py-3 transition-all duration-300 ${
           isScrolled ? "bg-white/10 shadow-lg" : "bg-white/5"
@@ -58,11 +52,7 @@ export default function Header() {
         </div>
 
         {/* Logo with Favicon */}
-        <motion.div
-          className="flex items-center"
-          whileHover={{ scale: 1.05 }}
-          transition={{ type: "spring", stiffness: 400, damping: 10 }}
-        >
+        <div className="flex items-center transition-transform hover:scale-105">
           <Link href="/">
             <div className="group relative flex items-center gap-2">
               {/* Glowing effect on hover */}
@@ -86,7 +76,7 @@ export default function Header() {
               </div>
             </div>
           </Link>
-        </motion.div>
+        </div>
 
         {/* Desktop Nav Items */}
         <div className="hidden md:flex items-center gap-8">
@@ -100,19 +90,17 @@ export default function Header() {
         {/* Desktop Actions */}
         <div className="hidden md:flex items-center gap-4">
           {/* Profile link */}
-          {/* <motion.a
+          {/* <a
             href="https://www.encodedcoder.com"
             target="_blank"
             rel="noopener noreferrer"
-            className="group relative overflow-hidden rounded-full"
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.98 }}
+            className="group relative overflow-hidden rounded-full hover:scale-105 transition-transform"
           >
             <div className="absolute inset-0 bg-gradient-to-r from-pink-500 via-purple-500 to-blue-500 animate-gradient-x"></div>
             <div className="px-5 py-1.5 bg-black/20 backdrop-blur-sm relative z-10 flex items-center gap-2 ">
               <span className="font-bold text-white">Created by Suresh</span>
             </div>
-          </motion.a> */}
+          </a> */}
 
           {/* UserNav component */}
           <UserNav />
@@ -148,101 +136,89 @@ export default function Header() {
       </div>
 
       {/* Mobile Menu */}
-      <AnimatePresence>
-        {isMobileMenuOpen && (
-          <motion.div
-            className="fixed top-[72px] left-0 right-0 px-4 z-40"
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            transition={{ duration: 0.2 }}
+      {isMobileMenuOpen && (
+        <div className="fixed top-[72px] left-0 right-0 px-4 z-40 transition-all">
+          <div
+            ref={mobileMenuRef}
+            className="max-w-5xl mx-auto rounded-2xl overflow-hidden backdrop-blur-md border border-white/20 bg-white/5 shadow-lg transition-all"
           >
-            <motion.div
-              ref={mobileMenuRef}
-              className="max-w-5xl mx-auto rounded-2xl overflow-hidden backdrop-blur-md border border-white/20 bg-white/5 shadow-lg"
-              initial={{ height: 0 }}
-              animate={{ height: "auto" }}
-              exit={{ height: 0 }}
-              transition={{ duration: 0.3 }}
-            >
-              <div className="p-5 space-y-4">
-                {/* Mobile Nav Items */}
-                <div className="flex flex-col space-y-3">
-                  <MobileNavItem
-                    label="Profile"
-                    href="/profile"
-                    onClick={() => setIsMobileMenuOpen(false)}
-                  />
-                  <MobileNavItem
-                    label="Settings"
-                    href="/settings"
-                    onClick={() => setIsMobileMenuOpen(false)}
-                  />
-                  {/* <MobileNavItem label="Home" href="/" onClick={() => setIsMobileMenuOpen(false)} /> */}
-                  <MobileNavItem
-                    label="My Links"
-                    href="/my-links"
-                    onClick={() => setIsMobileMenuOpen(false)}
-                  />
-                  <MobileNavItem
-                    label="API"
-                    href="/api-docs"
-                    onClick={() => setIsMobileMenuOpen(false)}
-                  />
-                  <MobileNavItem
-                    label="Pricing"
-                    href="/pricing"
-                    onClick={() => setIsMobileMenuOpen(false)}
-                  />
-                  <MobileNavItem
-                    label="Blog"
-                    href="/blog"
-                    onClick={() => setIsMobileMenuOpen(false)}
-                  />
-                  <MobileNavItem
-                    label="About"
-                    href="/about"
-                    onClick={() => setIsMobileMenuOpen(false)}
-                  />
-                </div>
-
-                {/* Divider */}
-                <div className="border-t border-white/10 my-3"></div>
-
-                {/* Legal Pages */}
-                <div className="flex flex-col space-y-3">
-                  <MobileNavItem
-                    label="Privacy Policy"
-                    href="/privacy"
-                    onClick={() => setIsMobileMenuOpen(false)}
-                  />
-                  <MobileNavItem
-                    label="Terms of Service"
-                    href="/terms"
-                    onClick={() => setIsMobileMenuOpen(false)}
-                  />
-                </div>
-
-                {/* Divider */}
-                <div className="border-t border-white/10 my-3"></div>
-
-                {/* Sign Out Button for Mobile */}
-                <div className="mt-4">
-                  <UserNav isMobile={true} />
-                </div>
+            <div className="p-5 space-y-4">
+              {/* Mobile Nav Items */}
+              <div className="flex flex-col space-y-3">
+                <MobileNavItem
+                  label="Profile"
+                  href="/profile"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                />
+                <MobileNavItem
+                  label="Settings"
+                  href="/settings"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                />
+                {/* <MobileNavItem label="Home" href="/" onClick={() => setIsMobileMenuOpen(false)} /> */}
+                <MobileNavItem
+                  label="My Links"
+                  href="/my-links"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                />
+                <MobileNavItem
+                  label="API"
+                  href="/api-docs"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                />
+                <MobileNavItem
+                  label="Pricing"
+                  href="/pricing"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                />
+                <MobileNavItem
+                  label="Blog"
+                  href="/blog"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                />
+                <MobileNavItem
+                  label="About"
+                  href="/about"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                />
               </div>
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </motion.header>
+
+              {/* Divider */}
+              <div className="border-t border-white/10 my-3"></div>
+
+              {/* Legal Pages */}
+              <div className="flex flex-col space-y-3">
+                <MobileNavItem
+                  label="Privacy Policy"
+                  href="/privacy"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                />
+                <MobileNavItem
+                  label="Terms of Service"
+                  href="/terms"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                />
+              </div>
+
+              {/* Divider */}
+              <div className="border-t border-white/10 my-3"></div>
+
+              {/* Sign Out Button for Mobile */}
+              <div className="mt-4">
+                <UserNav isMobile={true} />
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+    </header>
   );
 }
 
 // Individual nav item with animation
 function NavItem({ label }: { label: string }) {
   return (
-    <motion.div whileHover={{ scale: 1.1 }} className="relative group">
+    <div className="relative group transition-transform hover:scale-110">
       <Link
         href={`/${
           label === "Home"
@@ -256,7 +232,7 @@ function NavItem({ label }: { label: string }) {
         {label}
         <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-purple-500 to-pink-500 group-hover:w-full transition-all duration-300"></span>
       </Link>
-    </motion.div>
+    </div>
   );
 }
 

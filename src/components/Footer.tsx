@@ -64,9 +64,18 @@ export default function Footer() {
 
               {/* Social Icons */}
               <div className="flex items-center gap-4">
-                <SocialIcon href="https://twitter.com" icon="twitter" />
-                <SocialIcon href="https://github.com" icon="github" />
-                <SocialIcon href="https://linkedin.com" icon="linkedin" />
+                <SocialIcon
+                  href="https://twitter.com/encodedcoder_"
+                  icon="twitter"
+                />
+                <SocialIcon
+                  href="https://github.com/encodedcoder"
+                  icon="github"
+                />
+                <SocialIcon
+                  href="https://linkedin.com/in/encodedcoder"
+                  icon="linkedin"
+                />
               </div>
             </div>
 
