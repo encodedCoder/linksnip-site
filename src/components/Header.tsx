@@ -168,15 +168,42 @@ export default function Header() {
               <div className="p-5 space-y-4">
                 {/* Mobile Nav Items */}
                 <div className="flex flex-col space-y-3">
-                  <MobileNavItem label="Profile" href="/profile" />
-                  <MobileNavItem label="Settings" href="/settings" />
-                  {/* <MobileNavItem label="Home" href="/" /> */}
-                  <MobileNavItem label="My Links" href="/my-links" />
-                  <MobileNavItem label="API" href="/api-docs" />
-                  <MobileNavItem label="Pricing" href="/pricing" />
-                  <MobileNavItem label="Blog" href="/blog" />
-                  <MobileNavItem label="About" href="/about" />{" "}
-                  {/* Added About nav item */}
+                  <MobileNavItem
+                    label="Profile"
+                    href="/profile"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                  />
+                  <MobileNavItem
+                    label="Settings"
+                    href="/settings"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                  />
+                  {/* <MobileNavItem label="Home" href="/" onClick={() => setIsMobileMenuOpen(false)} /> */}
+                  <MobileNavItem
+                    label="My Links"
+                    href="/my-links"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                  />
+                  <MobileNavItem
+                    label="API"
+                    href="/api-docs"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                  />
+                  <MobileNavItem
+                    label="Pricing"
+                    href="/pricing"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                  />
+                  <MobileNavItem
+                    label="Blog"
+                    href="/blog"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                  />
+                  <MobileNavItem
+                    label="About"
+                    href="/about"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                  />
                 </div>
 
                 {/* Divider */}
@@ -184,8 +211,16 @@ export default function Header() {
 
                 {/* Legal Pages */}
                 <div className="flex flex-col space-y-3">
-                  <MobileNavItem label="Privacy Policy" href="/privacy" />
-                  <MobileNavItem label="Terms of Service" href="/terms" />
+                  <MobileNavItem
+                    label="Privacy Policy"
+                    href="/privacy"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                  />
+                  <MobileNavItem
+                    label="Terms of Service"
+                    href="/terms"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                  />
                 </div>
 
                 {/* Divider */}
@@ -226,11 +261,20 @@ function NavItem({ label }: { label: string }) {
 }
 
 // Mobile nav item component
-function MobileNavItem({ label, href }: { label: string; href: string }) {
+function MobileNavItem({
+  label,
+  href,
+  onClick,
+}: {
+  label: string;
+  href: string;
+  onClick: () => void;
+}) {
   return (
     <Link
       href={href}
       className="w-full px-4 py-2 text-white/90 hover:text-white hover:bg-white/10 rounded-lg transition-colors"
+      onClick={onClick}
     >
       {label}
     </Link>
