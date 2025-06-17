@@ -3,6 +3,7 @@
 import { useState, useRef } from "react";
 import { motion } from "framer-motion";
 import { QRCodeSVG } from "qrcode.react";
+import Image from "next/image";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 
@@ -86,7 +87,7 @@ export default function Home() {
     }
 
     // Create an image from the SVG
-    const img = new Image();
+    const img = new (window.Image || Image)();
     const svgData = new XMLSerializer().serializeToString(svgElement);
     const svgBlob = new Blob([svgData], {
       type: "image/svg+xml;charset=utf-8",
@@ -139,10 +140,16 @@ export default function Home() {
           className="text-center mb-8 pt-16 sm:pt-0"
         >
           <h1 className="text-4xl font-bold mb-2 flex items-center justify-center">
+            <Image
+              src="icon0.svg"
+              alt="LinkSnip logo"
+              width={50}
+              height={50}
+              className="mr-3"
+            />
             <span className="bg-clip-text text-transparent bg-gradient-to-r from-white to-white/70">
               LinkSnip
             </span>
-            {/* <span className="ml-2 text-pink-400">✂️</span> */}
           </h1>
           <p className="text-white/70">
             Transform long URLs into short, shareable links in seconds

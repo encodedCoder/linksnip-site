@@ -94,6 +94,7 @@ export default function Header() {
           <NavItem label="My Links" />
           <NavItem label="API" />
           <NavItem label="Pricing" />
+          <NavItem label="About" /> {/* Added About nav item */}
         </div>
 
         {/* Desktop Actions */}
@@ -167,12 +168,15 @@ export default function Header() {
               <div className="p-5 space-y-4">
                 {/* Mobile Nav Items */}
                 <div className="flex flex-col space-y-3">
-                  <MobileNavItem label="Home" href="/" />
+                  <MobileNavItem label="Profile" href="/profile" />
+                  <MobileNavItem label="Settings" href="/settings" />
+                  {/* <MobileNavItem label="Home" href="/" /> */}
                   <MobileNavItem label="My Links" href="/my-links" />
                   <MobileNavItem label="API" href="/api-docs" />
                   <MobileNavItem label="Pricing" href="/pricing" />
-                  <MobileNavItem label="Profile" href="/profile" />
-                  <MobileNavItem label="Settings" href="/settings" />
+                  <MobileNavItem label="Blog" href="/blog" />
+                  <MobileNavItem label="About" href="/about" />{" "}
+                  {/* Added About nav item */}
                 </div>
 
                 {/* Divider */}

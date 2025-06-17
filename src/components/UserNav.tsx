@@ -45,7 +45,7 @@ export default function UserNav({ isMobile = false }: UserNavProps) {
         href="/signin"
         className={
           isMobile
-            ? "w-full py-3 rounded-xl text-center font-medium bg-gradient-to-r from-purple-500 to-pink-500 text-white hover:brightness-110 transition-all shadow-md"
+            ? "block w-full py-3 rounded-xl text-center font-medium bg-gradient-to-r from-purple-500 to-pink-500 text-white hover:brightness-110 transition-all shadow-md"
             : "px-5 py-1.5 rounded-full border border-white/20 bg-white/10 text-white hover:bg-white/20 transition-colors"
         }
       >
@@ -98,45 +98,47 @@ export default function UserNav({ isMobile = false }: UserNavProps) {
 
       {/* Dropdown menu */}
       {isOpen && (
-        <div className="absolute right-0 mt-2 w-56 rounded-md shadow-lg backdrop-blur-md border border-white/20 bg-black/40 ring-1 ring-white/10 z-50">
-          <div className="py-1">
-            <div className="px-4 py-3 border-b border-white/20">
-              <p className="text-sm font-medium text-white">
-                {session.user?.name}
-              </p>
-              <p className="text-xs text-white/70 truncate">
-                {session.user?.email}
-              </p>
+        <div className="absolute right-0 mt-2 z-50 isolate">
+          <div className="pb-4 w-56 rounded-2xl shadow-xl border border-white/20 bg-black/60 backdrop-blur-md backdrop-filter overflow-hidden">
+            <div className="py-1">
+              <div className="px-4 py-3 border-b border-white/20">
+                <p className="text-sm font-medium text-white">
+                  {session.user?.name}
+                </p>
+                <p className="text-xs text-white/70 truncate">
+                  {session.user?.email}
+                </p>
+              </div>
+
+              {/* Profile link */}
+              <Link
+                href="/profile"
+                className="block w-full text-left px-4 py-2 text-sm text-white hover:bg-white/10 transition-colors"
+                onClick={() => setIsOpen(false)}
+              >
+                Profile
+              </Link>
+
+              {/* Settings link */}
+              <Link
+                href="/settings"
+                className="block w-full text-left px-4 py-2 text-sm text-white hover:bg-white/10 transition-colors"
+                onClick={() => setIsOpen(false)}
+              >
+                Settings
+              </Link>
+
+              {/* Divider */}
+              <div className="border-t border-white/20 my-1"></div>
+
+              {/* Sign out button */}
+              <button
+                onClick={() => signOut()}
+                className="w-[calc(100%-2rem)] mx-4 mt-4 py-2 rounded-xl text-center font-medium bg-gradient-to-r from-pink-500 to-purple-500 text-white hover:brightness-110 transition-all shadow-md"
+              >
+                Sign out
+              </button>
             </div>
-
-            {/* Profile link */}
-            <Link
-              href="/profile"
-              className="block w-full text-left px-4 py-2 text-sm text-white hover:bg-white/10 transition-colors"
-              onClick={() => setIsOpen(false)}
-            >
-              Profile
-            </Link>
-
-            {/* Settings link */}
-            <Link
-              href="/settings"
-              className="block w-full text-left px-4 py-2 text-sm text-white hover:bg-white/10 transition-colors"
-              onClick={() => setIsOpen(false)}
-            >
-              Settings
-            </Link>
-
-            {/* Divider */}
-            <div className="border-t border-white/20 my-1"></div>
-
-            {/* Sign out button */}
-            <button
-              onClick={() => signOut()}
-              className="block w-full text-left px-4 py-2 text-sm text-pink-400 hover:bg-white/10 transition-colors"
-            >
-              Sign out
-            </button>
           </div>
         </div>
       )}
