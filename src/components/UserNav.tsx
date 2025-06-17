@@ -5,15 +5,49 @@ import Link from "next/link";
 import Image from "next/image";
 import { signOut, useSession } from "next-auth/react";
 import { useState, useRef, useEffect } from "react";
+import { createPortal } from "react-dom";
 
 interface UserNavProps {
   isMobile?: boolean;
 }
 
+// Separate component for the dialog to use with portal
+const SignOutConfirmationDialog = ({
+  onCancel,
+  onConfirm,
+}: {
+  onCancel: () => void;
+  onConfirm: () => void;
+}) => {
+  return (
+    <div className="fixed inset-0 bg-black/50 backdrop-blur-md flex items-center justify-center z-[9999]">
+      <div className="bg-black/90 border border-white/20 rounded-2xl p-6 max-w-sm w-full m-4">
+        <h3 className="text-lg font-medium text-white mb-2">Sign out</h3>
+        <p className="text-white/70 mb-6">Are you sure you want to sign out?</p>
+        <div className="flex space-x-3">
+          <button
+            onClick={onCancel}
+            className="flex-1 py-2 rounded-xl text-center font-medium bg-white/10 text-white hover:bg-white/20 transition-all"
+          >
+            Cancel
+          </button>
+          <button
+            onClick={onConfirm}
+            className="flex-1 py-2 rounded-xl text-center font-medium bg-gradient-to-r from-pink-500 to-purple-500 text-white hover:brightness-110 transition-all shadow-md"
+          >
+            Sign out
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+};
+
 export default function UserNav({ isMobile = false }: UserNavProps) {
   const { data: session, status } = useSession();
   const loading = status === "loading";
   const [isOpen, setIsOpen] = useState(false);
+  const [showSignOutConfirmation, setShowSignOutConfirmation] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   // Close dropdown when clicking outside
@@ -32,6 +66,11 @@ export default function UserNav({ isMobile = false }: UserNavProps) {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
+
+  const handleSignOut = () => {
+    setShowSignOutConfirmation(false);
+    signOut();
+  };
 
   if (loading)
     return (
@@ -57,12 +96,25 @@ export default function UserNav({ isMobile = false }: UserNavProps) {
   // For mobile view and already signed in - just show sign out button
   if (isMobile) {
     return (
-      <button
-        onClick={() => signOut()}
-        className="w-full py-3 rounded-xl text-center font-medium bg-gradient-to-r from-pink-500 to-purple-500 text-white hover:brightness-110 transition-all shadow-md"
-      >
-        Sign Out
-      </button>
+      <>
+        <button
+          onClick={() => setShowSignOutConfirmation(true)}
+          className="w-full py-3 rounded-xl text-center font-medium bg-gradient-to-r from-pink-500 to-purple-500 text-white hover:brightness-110 transition-all shadow-md"
+        >
+          Sign Out
+        </button>
+
+        {/* Sign Out Confirmation Dialog - rendered with portal */}
+        {showSignOutConfirmation &&
+          typeof document !== "undefined" &&
+          createPortal(
+            <SignOutConfirmationDialog
+              onCancel={() => setShowSignOutConfirmation(false)}
+              onConfirm={handleSignOut}
+            />,
+            document.body
+          )}
+      </>
     );
   }
 
@@ -133,7 +185,7 @@ export default function UserNav({ isMobile = false }: UserNavProps) {
 
               {/* Sign out button */}
               <button
-                onClick={() => signOut()}
+                onClick={() => setShowSignOutConfirmation(true)}
                 className="w-[calc(100%-2rem)] mx-4 mt-4 py-2 rounded-xl text-center font-medium bg-gradient-to-r from-pink-500 to-purple-500 text-white hover:brightness-110 transition-all shadow-md cursor-pointer"
               >
                 Sign out
@@ -142,6 +194,17 @@ export default function UserNav({ isMobile = false }: UserNavProps) {
           </div>
         </div>
       )}
+
+      {/* Sign Out Confirmation Dialog - rendered with portal */}
+      {showSignOutConfirmation &&
+        typeof document !== "undefined" &&
+        createPortal(
+          <SignOutConfirmationDialog
+            onCancel={() => setShowSignOutConfirmation(false)}
+            onConfirm={handleSignOut}
+          />,
+          document.body
+        )}
     </div>
   );
 }
