@@ -46,19 +46,21 @@ export default function AboutPage() {
       role: "Founder & CEO",
       bio: "Leading the vision and development of LinkSnip.",
       image:
-        "https://lh3.googleusercontent.com/a/ACg8ocJ1mp1jAEkN6ayGk2969OFuEO2zInuQyBiG-BFvfkxwe5G15KMu=s360-c-no", // Placeholder - replace with actual image
+        "https://lh3.googleusercontent.com/a/ACg8ocJ1mp1jAEkN6ayGk2969OFuEO2zInuQyBiG-BFvfkxwe5G15KMu=s360-c-no",
     },
     {
       name: "Shrey Dhiman",
       role: "Lead Developer",
       bio: "Architecture mastermind behind LinkSnip's robust platform.",
-      image: "/favicon.ico", // Placeholder - replace with actual image
+      image:
+        "https://images.unsplash.com/photo-1748771748590-a5347a9de086?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwcm9maWxlLXBhZ2V8MXx8fGVufDB8fHx8fA%3D%3D",
     },
     {
       name: "Shubham Kapoor",
       role: "Head of Design",
       bio: "Creating the beautiful, intuitive interfaces that make LinkSnip unique.",
-      image: "/favicon.ico", // Placeholder - replace with actual image
+      image:
+        "https://images.pexels.com/photos/31760040/pexels-photo-31760040.jpeg",
     },
   ];
 
@@ -274,9 +276,10 @@ export default function AboutPage() {
                           <Image
                             src={member.image}
                             alt={member.name}
-                            width={80}
-                            height={80}
-                            className="object-cover"
+                            width={96}
+                            height={96}
+                            className="w-full h-full object-cover"
+                            priority
                           />
                         </div>
                       </div>

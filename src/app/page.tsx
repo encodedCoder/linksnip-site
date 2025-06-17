@@ -6,6 +6,7 @@ import { QRCodeSVG } from "qrcode.react";
 import Image from "next/image";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import ToastMessage from "@/components/ToastMessage";
 
 export default function Home() {
   const [url, setUrl] = useState("");
@@ -15,6 +16,7 @@ export default function Home() {
   const [loading, setLoading] = useState(false);
   const [copied, setCopied] = useState(false);
   const [error, setError] = useState("");
+  const [toastVisible, setToastVisible] = useState(false);
   const qrRef = useRef(null);
 
   const validateCustomSlug = (slug: string) => {
@@ -63,7 +65,11 @@ export default function Home() {
   const copyToClipboard = () => {
     navigator.clipboard.writeText(shortUrl);
     setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
+    setToastVisible(true);
+    setTimeout(() => {
+      setCopied(false);
+      setToastVisible(false);
+    }, 2000);
   };
 
   const toggleQrCode = () => {
@@ -121,6 +127,7 @@ export default function Home() {
   return (
     <>
       <Header />
+      <ToastMessage visible={toastVisible} message="Snipped Link Copied" />
       <main className="min-h-screen flex flex-col items-center justify-center p-4 sm:p-20">
         {/* Animated background */}
         <div className="absolute inset-0 -z-10">
@@ -260,10 +267,11 @@ export default function Home() {
                       Snipping...
                     </span>
                   ) : (
-                    <span className="flex items-center">
+                    <span className="flex items-center cursor-pointer">
                       Snip URL
+                      {/* Right arrow */}
                       <svg
-                        className="ml-2 h-5 w-5 transition-transform group-hover:translate-x-1"
+                        className="ml-2 h-5 w-5 transition-transform group-hover:translate-x-1 "
                         fill="none"
                         stroke="currentColor"
                         viewBox="0 0 24 24"
@@ -295,8 +303,28 @@ export default function Home() {
                       {shortUrl}
                     </div>
                     <button
+                      onClick={() => window.open(shortUrl, "_blank")}
+                      className="flex items-center justify-center px-4 bg-white/10 hover:bg-white/25 active:brightness-90 transition-all cursor-pointer border-l border-white/10"
+                      aria-label="Open in new tab"
+                    >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        className="h-5 w-5 text-white"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
+                        />
+                      </svg>
+                    </button>
+                    <button
                       onClick={copyToClipboard}
-                      className="flex items-center justify-center px-4 bg-white/10 hover:bg-white/25 active:brightness-90 transition-all"
+                      className="flex items-center justify-center px-4 bg-white/10 hover:bg-white/25 active:brightness-90 transition-all cursor-pointer border-l border-white/10"
                     >
                       {copied ? (
                         <svg
@@ -329,7 +357,7 @@ export default function Home() {
                   <div className="flex gap-2">
                     <button
                       onClick={toggleQrCode}
-                      className="flex-1 flex items-center justify-center gap-2 bg-white/5 hover:bg-white/10 text-white py-2 px-3 rounded-lg border border-white/10 transition-all"
+                      className="flex-1 flex items-center justify-center gap-2 bg-white/5 hover:bg-white/10 text-white py-2 px-3 rounded-lg border border-white/10 transition-all cursor-pointer"
                     >
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
