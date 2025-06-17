@@ -7,9 +7,83 @@ import { signOut, useSession } from "next-auth/react";
 import { useState, useRef, useEffect } from "react";
 import { createPortal } from "react-dom";
 
-interface UserNavProps {
-  isMobile?: boolean;
+// Define a proper type for the user data
+interface UserData {
+  name?: string | null;
+  email?: string | null;
+  image?: string | null;
+  id?: string;
 }
+
+// Separate component for the user dropdown menu
+const UserDropdown = ({
+  isOpen,
+  onClose,
+  userData,
+  onSignOutClick,
+}: {
+  isOpen: boolean;
+  onClose: () => void;
+  userData: UserData; // Fixed type instead of any
+  onSignOutClick: () => void;
+}) => {
+  if (!isOpen || typeof document === "undefined") return null;
+
+  // Get the button position to anchor our dropdown
+  const buttonElement = document.querySelector("[data-dropdown-trigger]");
+  const buttonRect = buttonElement?.getBoundingClientRect();
+
+  if (!buttonRect) return null;
+
+  // Using portal to render at the body level, just like mobile menu
+  return createPortal(
+    <div
+      style={{
+        position: "fixed",
+        top: `${buttonRect.bottom + 8}px`,
+        left: `${buttonRect.right - 224}px`, // 224px = dropdown width (w-56)
+        zIndex: 100,
+      }}
+    >
+      <div className="w-56 rounded-2xl shadow-xl border border-white/20 overflow-hidden bg-black/20 backdrop-blur-md">
+        <div className="py-1">
+          <div className="px-4 py-3 border-b border-white/20">
+            <p className="text-sm font-medium text-white">{userData?.name}</p>
+            <p className="text-xs text-white/70 truncate">{userData?.email}</p>
+          </div>
+
+          <Link
+            href="/profile"
+            className="block w-full text-left px-4 py-2 text-sm text-white hover:bg-white/10 transition-colors"
+            onClick={onClose}
+          >
+            Profile
+          </Link>
+
+          <Link
+            href="/settings"
+            className="block w-full text-left px-4 py-2 text-sm text-white hover:bg-white/10 transition-colors"
+            onClick={onClose}
+          >
+            Settings
+          </Link>
+
+          <div className="border-t border-white/20 my-1"></div>
+
+          <div className="px-4 pb-4">
+            <button
+              onClick={onSignOutClick}
+              className="w-full py-2 rounded-xl text-center font-medium bg-gradient-to-r from-pink-500 to-purple-500 text-white hover:brightness-110 transition-all shadow-md cursor-pointer mt-4"
+            >
+              Sign out
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>,
+    document.body
+  );
+};
 
 // Separate component for the dialog to use with portal
 const SignOutConfirmationDialog = ({
@@ -27,13 +101,13 @@ const SignOutConfirmationDialog = ({
         <div className="flex space-x-3">
           <button
             onClick={onCancel}
-            className="flex-1 py-2 rounded-xl text-center font-medium bg-white/10 text-white hover:bg-white/20 transition-all"
+            className="flex-1 py-2 rounded-xl text-center font-medium bg-white/10 text-white hover:bg-white/20 transition-all cursor-pointer"
           >
             Cancel
           </button>
           <button
             onClick={onConfirm}
-            className="flex-1 py-2 rounded-xl text-center font-medium bg-gradient-to-r from-pink-500 to-purple-500 text-white hover:brightness-110 transition-all shadow-md"
+            className="flex-1 py-2 rounded-xl text-center font-medium bg-gradient-to-r from-pink-500 to-purple-500 text-white hover:brightness-110 transition-all shadow-md cursor-pointer"
           >
             Sign out
           </button>
@@ -42,6 +116,10 @@ const SignOutConfirmationDialog = ({
     </div>
   );
 };
+
+interface UserNavProps {
+  isMobile?: boolean;
+}
 
 export default function UserNav({ isMobile = false }: UserNavProps) {
   const { data: session, status } = useSession();
@@ -129,6 +207,7 @@ export default function UserNav({ isMobile = false }: UserNavProps) {
   return (
     <div className="relative inline-block text-left" ref={dropdownRef}>
       <button
+        data-dropdown-trigger
         onClick={() => setIsOpen(!isOpen)}
         className="px-4 py-1.5 rounded-full border border-white/20 bg-white/10 text-white hover:bg-white/20 transition-colors flex items-center space-x-2 cursor-pointer"
       >
@@ -148,54 +227,22 @@ export default function UserNav({ isMobile = false }: UserNavProps) {
         <span className="text-sm">{truncatedName}</span>
       </button>
 
-      {/* Dropdown menu */}
-      {isOpen && (
-        <div className="absolute right-0 mt-2 z-50 isolate">
-          <div className="pb-4 w-56 rounded-2xl shadow-xl border border-white/20 bg-black/60 backdrop-blur-md backdrop-filter overflow-hidden">
-            <div className="py-1">
-              <div className="px-4 py-3 border-b border-white/20">
-                <p className="text-sm font-medium text-white">
-                  {session.user?.name}
-                </p>
-                <p className="text-xs text-white/70 truncate">
-                  {session.user?.email}
-                </p>
-              </div>
+      {/* Dropdown menu using portal with fixed positioning */}
+      <UserDropdown
+        isOpen={isOpen}
+        onClose={() => setIsOpen(false)}
+        userData={
+          session?.user || {
+            name: null,
+            email: null,
+            image: null,
+            id: undefined,
+          }
+        }
+        onSignOutClick={() => setShowSignOutConfirmation(true)}
+      />
 
-              {/* Profile link */}
-              <Link
-                href="/profile"
-                className="block w-full text-left px-4 py-2 text-sm text-white hover:bg-white/10 transition-colors"
-                onClick={() => setIsOpen(false)}
-              >
-                Profile
-              </Link>
-
-              {/* Settings link */}
-              <Link
-                href="/settings"
-                className="block w-full text-left px-4 py-2 text-sm text-white hover:bg-white/10 transition-colors"
-                onClick={() => setIsOpen(false)}
-              >
-                Settings
-              </Link>
-
-              {/* Divider */}
-              <div className="border-t border-white/20 my-1"></div>
-
-              {/* Sign out button */}
-              <button
-                onClick={() => setShowSignOutConfirmation(true)}
-                className="w-[calc(100%-2rem)] mx-4 mt-4 py-2 rounded-xl text-center font-medium bg-gradient-to-r from-pink-500 to-purple-500 text-white hover:brightness-110 transition-all shadow-md cursor-pointer"
-              >
-                Sign out
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* Sign Out Confirmation Dialog - rendered with portal */}
+      {/* Sign Out Confirmation Dialog */}
       {showSignOutConfirmation &&
         typeof document !== "undefined" &&
         createPortal(
