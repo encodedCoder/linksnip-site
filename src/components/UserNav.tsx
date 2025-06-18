@@ -27,34 +27,44 @@ const UserDropdown = ({
   userData: UserData;
   onSignOutClick: () => void;
 }) => {
-  if (!isOpen || typeof document === "undefined") return null;
+  // Always define hooks at the top level, before any conditional logic
   const dropdownRef = useRef<HTMLDivElement>(null);
 
-  // Get the button position to anchor our dropdown
-  const buttonElement = document.querySelector("[data-dropdown-trigger]");
-  const buttonRect = buttonElement?.getBoundingClientRect();
+  // Use a state to store button rectangle data
+  const [buttonRect, setButtonRect] = useState<DOMRect | null>(null);
 
-  if (!buttonRect) return null;
-
-  // Handle click outside for this specific dropdown
+  // Effects must be called unconditionally
   useEffect(() => {
-    function handleClickOutside(event: MouseEvent) {
-      // Make sure we're not clicking on the dropdown or trigger button
-      if (
-        dropdownRef.current &&
-        !dropdownRef.current.contains(event.target as Node) &&
-        !(buttonElement && buttonElement.contains(event.target as Node))
-      ) {
-        onClose();
+    // Only perform DOM operations if dropdown is open
+    if (isOpen && typeof document !== "undefined") {
+      // Get the button position to anchor our dropdown
+      const buttonElement = document.querySelector("[data-dropdown-trigger]");
+      if (buttonElement) {
+        setButtonRect(buttonElement.getBoundingClientRect());
       }
-    }
 
-    // Use mousedown for more immediate response
-    document.addEventListener("mousedown", handleClickOutside, true);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside, true);
-    };
-  }, [onClose, buttonElement]);
+      // Handle click outside for this specific dropdown
+      function handleClickOutside(event: MouseEvent) {
+        // Make sure we're not clicking on the dropdown or trigger button
+        if (
+          dropdownRef.current &&
+          !dropdownRef.current.contains(event.target as Node) &&
+          !(buttonElement && buttonElement.contains(event.target as Node))
+        ) {
+          onClose();
+        }
+      }
+
+      // Use mousedown for more immediate response
+      document.addEventListener("mousedown", handleClickOutside, true);
+      return () => {
+        document.removeEventListener("mousedown", handleClickOutside, true);
+      };
+    }
+  }, [isOpen, onClose]);
+
+  // Early return after hooks are defined
+  if (!isOpen || typeof document === "undefined" || !buttonRect) return null;
 
   // Using portal to render at the body level, just like mobile menu
   return createPortal(
