@@ -24,10 +24,11 @@ const UserDropdown = ({
 }: {
   isOpen: boolean;
   onClose: () => void;
-  userData: UserData; // Fixed type instead of any
+  userData: UserData;
   onSignOutClick: () => void;
 }) => {
   if (!isOpen || typeof document === "undefined") return null;
+  const dropdownRef = useRef<HTMLDivElement>(null);
 
   // Get the button position to anchor our dropdown
   const buttonElement = document.querySelector("[data-dropdown-trigger]");
@@ -35,9 +36,30 @@ const UserDropdown = ({
 
   if (!buttonRect) return null;
 
+  // Handle click outside for this specific dropdown
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      // Make sure we're not clicking on the dropdown or trigger button
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(event.target as Node) &&
+        !(buttonElement && buttonElement.contains(event.target as Node))
+      ) {
+        onClose();
+      }
+    }
+
+    // Use mousedown for more immediate response
+    document.addEventListener("mousedown", handleClickOutside, true);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside, true);
+    };
+  }, [onClose, buttonElement]);
+
   // Using portal to render at the body level, just like mobile menu
   return createPortal(
     <div
+      ref={dropdownRef}
       style={{
         position: "fixed",
         top: `${buttonRect.bottom + 8}px`,
@@ -54,16 +76,16 @@ const UserDropdown = ({
 
           <Link
             href="/profile"
-            className="block w-full text-left px-4 py-2 text-sm text-white hover:bg-white/10 transition-colors"
             onClick={onClose}
+            className="block w-full text-left px-4 py-2 text-sm text-white hover:bg-white/10 transition-colors"
           >
             Profile
           </Link>
 
           <Link
             href="/settings"
-            className="block w-full text-left px-4 py-2 text-sm text-white hover:bg-white/10 transition-colors"
             onClick={onClose}
+            className="block w-full text-left px-4 py-2 text-sm text-white hover:bg-white/10 transition-colors"
           >
             Settings
           </Link>
@@ -72,7 +94,11 @@ const UserDropdown = ({
 
           <div className="px-4 pb-4">
             <button
-              onClick={onSignOutClick}
+              onClick={(e) => {
+                e.stopPropagation();
+                onSignOutClick();
+                onClose();
+              }}
               className="w-full py-2 rounded-xl text-center font-medium bg-gradient-to-r from-pink-500 to-purple-500 text-white hover:brightness-110 transition-all shadow-md cursor-pointer mt-4"
             >
               Sign out
@@ -93,9 +119,31 @@ const SignOutConfirmationDialog = ({
   onCancel: () => void;
   onConfirm: () => void;
 }) => {
+  const dialogRef = useRef<HTMLDivElement>(null);
+
+  // Handle clicks outside dialog
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (
+        dialogRef.current &&
+        !dialogRef.current.contains(event.target as Node)
+      ) {
+        onCancel();
+      }
+    }
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [onCancel]);
+
   return (
     <div className="fixed inset-0 bg-black/50 backdrop-blur-md flex items-center justify-center z-[9999]">
-      <div className="bg-black/90 border border-white/20 rounded-2xl p-6 max-w-sm w-full m-4">
+      <div
+        ref={dialogRef}
+        className="bg-black/90 border border-white/20 rounded-2xl p-6 max-w-sm w-full m-4"
+      >
         <h3 className="text-lg font-medium text-white mb-2">Sign out</h3>
         <p className="text-white/70 mb-6">Are you sure you want to sign out?</p>
         <div className="flex space-x-3">
@@ -126,24 +174,6 @@ export default function UserNav({ isMobile = false }: UserNavProps) {
   const loading = status === "loading";
   const [isOpen, setIsOpen] = useState(false);
   const [showSignOutConfirmation, setShowSignOutConfirmation] = useState(false);
-  const dropdownRef = useRef<HTMLDivElement>(null);
-
-  // Close dropdown when clicking outside
-  useEffect(() => {
-    function handleClickOutside(event: MouseEvent) {
-      if (
-        dropdownRef.current &&
-        !dropdownRef.current.contains(event.target as Node)
-      ) {
-        setIsOpen(false);
-      }
-    }
-
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, []);
 
   const handleSignOut = () => {
     setShowSignOutConfirmation(false);
@@ -205,7 +235,7 @@ export default function UserNav({ isMobile = false }: UserNavProps) {
       : displayName;
 
   return (
-    <div className="relative inline-block text-left" ref={dropdownRef}>
+    <div className="relative inline-block text-left">
       <button
         data-dropdown-trigger
         onClick={() => setIsOpen(!isOpen)}
